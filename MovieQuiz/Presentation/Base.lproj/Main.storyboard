@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
@@ -14,17 +14,17 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MovieQuizViewController" customModule="MovieQuiz" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="5qc-y6-dwH" userLabel="Main Stack View">
-                                <rect key="frame" x="20" y="54" width="374" height="788.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="5qc-y6-dwH" userLabel="Main Stack View">
+                                <rect key="frame" x="20" y="10" width="335" height="657"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lxl-J0-Y0N" userLabel="Labels Stack View">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="23.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TSK-22-OjR" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="333.5" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="294.5" height="23.5"/>
                                                 <color key="tintColor" name="YP White"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Вопрос:">
@@ -37,7 +37,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1TB-eb-Z58" userLabel="Index Label">
-                                                <rect key="frame" x="333.5" y="0.0" width="40.5" height="23.5"/>
+                                                <rect key="frame" x="294.5" y="0.0" width="40.5" height="23.5"/>
                                                 <color key="tintColor" name="YP White"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="1/10">
@@ -52,17 +52,27 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3PO-ba-fNA" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
+                                        <rect key="frame" x="0.0" y="33.5" width="335" height="489.5"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="3PO-ba-fNA" secondAttribute="height" multiplier="2:3" id="fdI-2Y-siu"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="fdI-2Y-siu"/>
+                                            </mask>
+                                        </variation>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fYz-xX-zj4" userLabel="Question View">
-                                        <rect key="frame" x="0.0" y="624.5" width="374" height="84"/>
+                                        <rect key="frame" x="0.0" y="533" width="335" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3V-78-qZv" userLabel="Question Label">
-                                                <rect key="frame" x="20" y="5" width="334" height="74"/>
+                                                <rect key="frame" x="20" y="0.0" width="295" height="54"/>
                                                 <color key="tintColor" name="YP White"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Рейтинг этого фильма меньше, чем 5?">
@@ -77,17 +87,17 @@
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="P3V-78-qZv" secondAttribute="bottom" constant="5" id="5ex-hN-HEy"/>
+                                            <constraint firstAttribute="bottom" secondItem="P3V-78-qZv" secondAttribute="bottom" id="5ex-hN-HEy"/>
                                             <constraint firstItem="P3V-78-qZv" firstAttribute="leading" secondItem="fYz-xX-zj4" secondAttribute="leading" constant="20" id="dcO-Vf-SPI"/>
-                                            <constraint firstItem="P3V-78-qZv" firstAttribute="top" secondItem="fYz-xX-zj4" secondAttribute="top" constant="5" id="lux-l3-SO4"/>
+                                            <constraint firstItem="P3V-78-qZv" firstAttribute="top" secondItem="fYz-xX-zj4" secondAttribute="top" id="lux-l3-SO4"/>
                                             <constraint firstAttribute="trailing" secondItem="P3V-78-qZv" secondAttribute="trailing" constant="20" id="wie-qv-KfF"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="TJn-dQ-W2d" userLabel="Buttons Stack View">
-                                        <rect key="frame" x="0.0" y="728.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="597" width="335" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5nh-WK-nNQ" userLabel="No button">
-                                                <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="157.5" height="60"/>
                                                 <color key="backgroundColor" name="YP White"/>
                                                 <color key="tintColor" name="YP Black"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -106,13 +116,16 @@
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dCq-N1-6K8"/>
+                                                </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sLA-nH-gnX" userLabel="Yes button">
-                                                <rect key="frame" x="197" y="0.0" width="177" height="60"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sLA-nH-gnX" userLabel="Yes button">
+                                                <rect key="frame" x="177.5" y="0.0" width="157.5" height="60"/>
                                                 <color key="backgroundColor" name="YP White"/>
                                                 <color key="tintColor" name="YP Black"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" subtitle="">
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Button">
                                                     <attributedString key="attributedTitle">
                                                         <fragment content="Да">
                                                             <attributes>
@@ -121,12 +134,15 @@
                                                             </attributes>
                                                         </fragment>
                                                     </attributedString>
-                                                </buttonConfiguration>
+                                                </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                         <integer key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="53B-ev-5I8"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -140,19 +156,27 @@
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="5qc-y6-dwH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="KmL-zb-3b1"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="5qc-y6-dwH" secondAttribute="bottom" id="SsY-3O-bob"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="5qc-y6-dwH" secondAttribute="trailing" constant="20" id="duY-B1-vLX"/>
                             <constraint firstItem="5qc-y6-dwH" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="jGY-Xc-Cbs"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="counterLabel" destination="1TB-eb-Z58" id="v9L-GJ-GTN"/>
+                        <outlet property="imageView" destination="3PO-ba-fNA" id="Twl-hp-6Lx"/>
+                        <outlet property="noButton" destination="5nh-WK-nNQ" id="xep-1x-pOZ"/>
+                        <outlet property="textLabel" destination="P3V-78-qZv" id="waz-g2-qva"/>
+                        <outlet property="yesButton" destination="sLA-nH-gnX" id="Jiz-BQ-iHS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-55.072463768115945" y="55.580357142857139"/>
+            <point key="canvasLocation" x="-56.521739130434788" y="54.910714285714285"/>
         </scene>
     </scenes>
     <resources>
         <namedColor name="YP Black">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
