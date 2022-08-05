@@ -19,6 +19,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .portrait }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
