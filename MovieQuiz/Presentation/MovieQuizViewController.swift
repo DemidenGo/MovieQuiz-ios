@@ -21,11 +21,11 @@ final class MovieQuizViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        customizeImageView()
+        setupImageView()
         showFirstQuizStep()
     }
 
-    private func customizeImageView() {
+    private func setupImageView() {
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
     }
@@ -69,7 +69,7 @@ final class MovieQuizViewController: UIViewController {
         noButton.isUserInteractionEnabled = true
     }
 
-    private func showNextQuestionOrResultWithDelay (seconds: Double) {
+    private func showNextQuestionOrResultWithDelay(seconds: Double) {
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             self.showNextQuestionOrResult()
         }
@@ -109,8 +109,7 @@ final class MovieQuizViewController: UIViewController {
     private func showAnswerResult(isCorrect: Bool) {
         // индикация правильности ответа
         imageView.layer.borderWidth = 8
-        guard isCorrect else { imageView.layer.borderColor = UIColor.ypRed.cgColor; return }
-        imageView.layer.borderColor = UIColor.ypGreen.cgColor
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
 
     private func showNextQuestionOrResult() {
