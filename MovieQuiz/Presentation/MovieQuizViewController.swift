@@ -22,15 +22,19 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         customizeImageView()
-        if let firstQuestion = questions.first {
-            let firstQuizeStep = convert(model: firstQuestion)
-            show(quize: firstQuizeStep)
-        }
+        showFirstQuizStep()
     }
 
     private func customizeImageView() {
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
+    }
+
+    private func showFirstQuizStep() {
+        if let firstQuestion = questions.first {
+            let firstQuizStep = convert(model: firstQuestion)
+            show(quiz: firstQuizStep)
+        }
     }
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -71,7 +75,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
 
-    private func show(quize step: QuizStepViewModel) {
+    private func show(quiz step: QuizStepViewModel) {
         // здесь мы заполняем нашу картинку, текст и счётчик данными
         counterLabel.text = "\(step.questionNumber)/10"
         imageView.image = step.image
@@ -88,7 +92,7 @@ final class MovieQuizViewController: UIViewController {
         let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
             self?.currentQuestionIndex = 0
             self?.rightAnswerCounter = 0
-            self?.show(quize: self!.convert(model: self!.questions[0]))
+            self?.showFirstQuizStep()
         }
         alert.addAction(action)
         present(alert, animated: true)
@@ -120,7 +124,7 @@ final class MovieQuizViewController: UIViewController {
             currentQuestionIndex += 1
             let currentQuestion = questions[currentQuestionIndex]
             let currentQuizeStep = convert(model: currentQuestion)
-            show(quize: currentQuizeStep)
+            show(quiz: currentQuizeStep)
         }
     }
 
@@ -149,15 +153,15 @@ struct QuizResultsViewModel {
     let buttonText: String
 
     static func makeModel(for result: Int,
-                          _ quizeCounter: Int,
-                          _ bestQuize: (score: Int, date: String)) -> QuizResultsViewModel {
+                          _ quizCounter: Int,
+                          _ bestQuiz: (score: Int, date: String)) -> QuizResultsViewModel {
         if result == 10 {
             return QuizResultsViewModel(title: "Вы супер киноман!",
-                                         text: "Все ответы верные! Такому знактоку надо работать в киноиндустрии. Сколько фильмов вы можете посмотреть в день?\nКоличество сыгранных квизов: \(quizeCounter)",
+                                         text: "Все ответы верные! Такому знактоку надо работать в киноиндустрии. Сколько фильмов вы можете посмотреть в день?\nКоличество сыгранных квизов: \(quizCounter)",
                                          buttonText: "Сыграть ещё раз")
         } else {
             return QuizResultsViewModel(title: "Этот раунд окончен!",
-                                         text: "Ваш результат: \(result)/10\nКоличество сыгранных квизов: \(quizeCounter)\nРекорд: \(bestQuize.score)/10 (\(bestQuize.date))\nСредняя точность: \(Double(result) / 10 * 100)%",
+                                         text: "Ваш результат: \(result)/10\nКоличество сыгранных квизов: \(quizCounter)\nРекорд: \(bestQuiz.score)/10 (\(bestQuiz.date))\nСредняя точность: \(Double(result) / 10 * 100)%",
                                          buttonText: "Сыграть ещё раз")
         }
     }
