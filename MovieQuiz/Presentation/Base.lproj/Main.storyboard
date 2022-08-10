@@ -43,7 +43,7 @@
                                         <rect key="frame" x="0.0" y="33.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="3PO-ba-fNA" secondAttribute="height" multiplier="2:3" id="fdI-2Y-siu"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="3PO-ba-fNA" secondAttribute="height" multiplier="2:3" id="fdI-2Y-siu"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fYz-xX-zj4" userLabel="Question View">
