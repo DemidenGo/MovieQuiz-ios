@@ -1,9 +1,9 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private let questionsAmount = 10
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
     private var rightAnswerCounter = 0
@@ -24,21 +24,24 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupImageView()
-        showFirstQuizStep()
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
     }
 
-    private func setupImageView() {
-        imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 20
-    }
+    // MARK: - QuestionFactoryDelegate
 
-    private func showFirstQuizStep() {
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let firstQuizStep = convert(model: firstQuestion)
-            show(quiz: firstQuizStep)
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        currentQuestion = question
+        let quizStep = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: quizStep)
         }
     }
+
+    // MARK: - Actions
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         check(userAnswer: true)
@@ -50,6 +53,13 @@ final class MovieQuizViewController: UIViewController {
         check(userAnswer: false)
         disableUserInteractionForButtons()
         showNextQuestionOrResultWithDelay(seconds: 1)
+    }
+
+    // MARK: - Private functions
+
+    private func setupImageView() {
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 20
     }
 
     private func check(userAnswer: Bool) {
@@ -87,7 +97,7 @@ final class MovieQuizViewController: UIViewController {
         enableUserInteractionForButtons()
     }
 
-    private func show(quize result: QuizResultsViewModel) {
+    private func show(quiz result: QuizResultsViewModel) {
         // здесь мы показываем результат прохождения квиза
         let alert = UIAlertController(title: result.title,
                                       message: result.text,
@@ -95,7 +105,7 @@ final class MovieQuizViewController: UIViewController {
         let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
             self?.currentQuestionIndex = 0
             self?.rightAnswerCounter = 0
-            self?.showFirstQuizStep()
+            self?.questionFactory?.requestNextQuestion()
         }
         alert.addAction(action)
         present(alert, animated: true)
@@ -119,15 +129,12 @@ final class MovieQuizViewController: UIViewController {
         if currentQuestionIndex == questionsAmount - 1 {
             // вычисляем и показываем результат квиза
             calculateQuizResult()
-            let quizeResultsModel = QuizResultsViewModel.makeModel(for: rightAnswerCounter, questionsAmount, quizeCounter, bestQuizResult)
-            show(quize: quizeResultsModel)
+            let quizResultsModel = QuizResultsViewModel.makeModel(for: rightAnswerCounter, questionsAmount, quizeCounter, bestQuizResult)
+            show(quiz: quizResultsModel)
         } else {
             // показываем следующий вопрос
             currentQuestionIndex += 1
-            guard let nextQuestion = questionFactory.requestNextQuestion() else { return }
-            currentQuestion = nextQuestion
-            let currentQuizeStep = convert(model: nextQuestion)
-            show(quiz: currentQuizeStep)
+            questionFactory?.requestNextQuestion()
         }
     }
 
