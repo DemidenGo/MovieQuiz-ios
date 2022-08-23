@@ -3,6 +3,7 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private let questionsAmount = 10
+    private var resultAlertPresenter: ResultAlertPresenterProtocol?
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
@@ -24,7 +25,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupImageView()
-        questionFactory = QuestionFactory(delegate: self)
+        setDelegates()
         questionFactory?.requestNextQuestion()
     }
 
@@ -60,6 +61,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func setupImageView() {
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
+    }
+
+    private func setDelegates() {
+        questionFactory = QuestionFactory(delegate: self)
+        resultAlertPresenter = ResultAlertPresenter(viewController: self)
     }
 
     private func check(userAnswer: Bool) {
@@ -98,17 +104,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func show(quiz result: QuizResultsViewModel) {
-        // здесь мы показываем результат прохождения квиза
-        let alert = UIAlertController(title: result.title,
-                                      message: result.text,
-                                      preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+        // показываем алерт с результатами пройденного квиза, готовим следующий раунд квиза
+        resultAlertPresenter?.show(quiz: result) { [weak self] in
             self?.currentQuestionIndex = 0
             self?.rightAnswerCounter = 0
             self?.questionFactory?.requestNextQuestion()
         }
-        alert.addAction(action)
-        present(alert, animated: true)
     }
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
