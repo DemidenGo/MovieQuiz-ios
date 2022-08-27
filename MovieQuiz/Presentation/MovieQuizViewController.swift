@@ -5,12 +5,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount = 10
     private var resultAlertPresenter: ResultAlertPresenterProtocol?
     private var questionFactory: QuestionFactoryProtocol?
+    private var statisticService: StatisticServiceProtocol = StatisticServiceImplementation()
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
     private var rightAnswerCounter = 0
-    private var quizeCounter = 0
-    private var bestQuizResult = (score: 0, date: "")
-    private var currentDate: String { Date().dateTimeString }
+    private var bestQuizResult: GameRecord { statisticService.bestGame }
 
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
@@ -130,7 +129,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if currentQuestionIndex == questionsAmount - 1 {
             // вычисляем и показываем результат квиза
             calculateQuizResult()
-            let quizResultsModel = QuizResultsViewModel.makeModel(for: rightAnswerCounter, questionsAmount, quizeCounter, bestQuizResult)
+            let quizResultsModel = QuizResultsViewModel.makeModel(for: rightAnswerCounter,
+                                                                  questionsAmount,
+                                                                  statisticService.gamesCount,
+                                                                  bestQuizResult,
+                                                                  statisticService.totalAccuracy)
             show(quiz: quizResultsModel)
         } else {
             // показываем следующий вопрос
@@ -140,10 +143,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func calculateQuizResult() {
-        quizeCounter += 1
-        if rightAnswerCounter > bestQuizResult.score {
-            bestQuizResult.score = rightAnswerCounter
-            bestQuizResult.date = currentDate
+        statisticService.gamesCount += 1
+        if bestQuizResult.isWorseThan(currentQuizScore: rightAnswerCounter) {
+            statisticService.store(correct: rightAnswerCounter, total: questionsAmount)
         }
+        let currentAccuracy = round(Double(rightAnswerCounter) / Double(questionsAmount) * 100)
+        let gamesCount = Double(statisticService.gamesCount)
+        let previousGamesCount = Double(statisticService.gamesCount - 1)
+        let totalAccuracy = (statisticService.totalAccuracy * (previousGamesCount) + currentAccuracy) / gamesCount
+        let totalAccuracyRounded = round(totalAccuracy * 100) / 100
+        statisticService.totalAccuracy = totalAccuracyRounded
     }
 }
