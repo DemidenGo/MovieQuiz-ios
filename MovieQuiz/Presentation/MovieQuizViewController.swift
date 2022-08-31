@@ -16,7 +16,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
-
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .portrait }
 
     // MARK: - Lifecycle
@@ -25,20 +26,31 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         setupImageView()
         setDelegates()
-        questionFactory?.requestNextQuestion()
+        showLoadingIndicator()
+        questionFactory?.loadData()
     }
 
     // MARK: - QuestionFactoryDelegate
 
+    // Получен вопрос для квиза
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
+        guard let question = question else { return }
         currentQuestion = question
         let quizStep = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: quizStep)
         }
+    }
+
+    // Данные успешно загружены
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+
+    // Пришла ошибка от сервера
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
     }
 
     // MARK: - Actions
@@ -63,7 +75,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func setDelegates() {
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         resultAlertPresenter = ResultAlertPresenter(viewController: self)
     }
 
@@ -113,7 +125,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         // конвертируем модель вопроса во вью модель для состояния "Вопрос задан"
-        let image = UIImage(named: model.image)
+        let image = UIImage(data: model.image)
         let question = model.text
         let questionNumber = String(currentQuestionIndex + 1)
         return QuizStepViewModel(image: image, question: question, questionNumber: questionNumber)
@@ -153,5 +165,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let totalAccuracy = (statisticService.totalAccuracy * (previousGamesCount) + currentAccuracy) / gamesCount
         let totalAccuracyRounded = round(totalAccuracy * 100) / 100
         statisticService.totalAccuracy = totalAccuracyRounded
+    }
+
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func showNetworkError(message: String) {
+        activityIndicator.isHidden = true
+        let alert = UIAlertController(title: "Ошибка",
+                                      message: "Во время загрузки данных из сети что-то пошло не так:\n\(message)",
+                                      preferredStyle: .alert)
+        let action = UIAlertAction(title: "Попробовать ещё раз", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.showLoadingIndicator()
+            self.questionFactory?.loadData()
+        }
+        alert.addAction(action)
+        present(alert, animated: true)
     }
 }
