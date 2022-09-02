@@ -12,9 +12,8 @@ class QuestionFactory: QuestionFactoryProtocol {
     // Mock-данные для следующего спринта
     //private var questions: [QuizQuestion] = QuizQuestion.makeMockModel()
 
-    private let delegate: QuestionFactoryDelegate
+    private weak var delegate: QuestionFactoryDelegate?
     private let moviesLoader: MoviesLoadable
-
     private var movies: [MostPopularMovie] = []
 
     init(delegate: QuestionFactoryDelegate, moviesLoader: MoviesLoadable) {
@@ -33,9 +32,19 @@ class QuestionFactory: QuestionFactoryProtocol {
             var imageData = Data()
 
             do {
+                // Во время загрузки постера показывваем индикатор в главном потоке
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.showLoadingIndicator()
+                }
                 imageData = try Data(contentsOf: movie.imageURL)
             } catch {
-                print("Failed to load image: \(error.localizedDescription)")
+                // Обрабатываем ошибку в главном потоке
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.didFailToLoadData(with: error.localizedDescription) { [weak self] in
+                        self?.delegate?.showLoadingIndicator()
+                        self?.requestNextQuestion()
+                    }
+                }
             }
 
             let randomRating = Int.random(in: 1...9)
@@ -48,7 +57,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             // Возвращаемся в главный поток и возвращаем вопрос через делегата
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.delegate.didReceiveNextQuestion(question: question)
+                self.delegate?.didReceiveNextQuestion(question: question)
             }
         }
 // Работа с mock-данными для следующего спринта
@@ -63,10 +72,20 @@ class QuestionFactory: QuestionFactoryProtocol {
                 guard let self = self else { return }
                 switch result {
                 case .success(let mostPopularMovies):
-                    self.movies = mostPopularMovies.items
-                    self.delegate.didLoadDataFromServer()
+                    if !mostPopularMovies.items.isEmpty || mostPopularMovies.errorMessage == "" {
+                        self.movies = mostPopularMovies.items
+                        self.delegate?.didLoadDataFromServer()
+                    } else {
+                        self.delegate?.didFailToLoadData(with: mostPopularMovies.errorMessage) { [weak self] in
+                            self?.delegate?.showLoadingIndicator()
+                            self?.loadData()
+                        }
+                    }
                 case .failure(let error):
-                    self.delegate.didFailToLoadData(with: error)
+                    self.delegate?.didFailToLoadData(with: error.localizedDescription) { [weak self] in
+                        self?.delegate?.showLoadingIndicator()
+                        self?.loadData()
+                    }
                 }
             }
         }

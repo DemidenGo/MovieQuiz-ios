@@ -2,11 +2,12 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
-    private let questionsAmount = 10
     private var resultAlertPresenter: ResultAlertPresenterProtocol?
+    private var errorAlertPresenter: ErrorAlertPresenterProtocol?
     private var questionFactory: QuestionFactoryProtocol?
     private var statisticService: StatisticServiceProtocol = StatisticServiceImplementation()
     private var currentQuestion: QuizQuestion?
+    private let questionsAmount = 10
     private var currentQuestionIndex = 0
     private var rightAnswerCounter = 0
     private var bestQuizResult: GameRecord { statisticService.bestGame }
@@ -25,7 +26,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupImageView()
-        setDelegates()
+        setupDelegates()
         showLoadingIndicator()
         questionFactory?.loadData()
     }
@@ -38,6 +39,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         currentQuestion = question
         let quizStep = convert(model: question)
         DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.isHidden = true
             self?.show(quiz: quizStep)
         }
     }
@@ -49,8 +51,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     // Пришла ошибка от сервера
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
+    func didFailToLoadData(with error: String, buttonAction: @escaping () -> Void) {
+        activityIndicator.isHidden = true
+        errorAlertPresenter?.showNetworkError(message: error) {
+            buttonAction()
+        }
+    }
+
+    func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
     }
 
     // MARK: - Actions
@@ -74,9 +84,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 20
     }
 
-    private func setDelegates() {
+    private func setupDelegates() {
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         resultAlertPresenter = ResultAlertPresenter(viewController: self)
+        errorAlertPresenter = ErrorAlertPresenter(viewController: self)
     }
 
     private func check(userAnswer: Bool) {
@@ -165,24 +176,5 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let totalAccuracy = (statisticService.totalAccuracy * (previousGamesCount) + currentAccuracy) / gamesCount
         let totalAccuracyRounded = round(totalAccuracy * 100) / 100
         statisticService.totalAccuracy = totalAccuracyRounded
-    }
-
-    private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-    }
-
-    private func showNetworkError(message: String) {
-        activityIndicator.isHidden = true
-        let alert = UIAlertController(title: "Ошибка",
-                                      message: "Во время загрузки данных из сети что-то пошло не так:\n\(message)",
-                                      preferredStyle: .alert)
-        let action = UIAlertAction(title: "Попробовать ещё раз", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            self.showLoadingIndicator()
-            self.questionFactory?.loadData()
-        }
-        alert.addAction(action)
-        present(alert, animated: true)
     }
 }

@@ -7,9 +7,9 @@
 
 import UIKit
 
-protocol QuestionFactoryDelegate {
+protocol QuestionFactoryDelegate: AnyObject {
     func didReceiveNextQuestion(question: QuizQuestion?)
     func didLoadDataFromServer()
-    func didFailToLoadData(with error: Error)
-    
+    func didFailToLoadData(with error: String, buttonAction: @escaping () -> Void)
+    func showLoadingIndicator()
 }
