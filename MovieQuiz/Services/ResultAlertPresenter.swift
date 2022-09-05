@@ -10,7 +10,7 @@ import UIKit
 
 class ResultAlertPresenter: ResultAlertPresenterProtocol {
 
-    private let viewController: UIViewController
+    private weak var viewController: UIViewController?
 
     init(viewController: UIViewController) {
         self.viewController = viewController
@@ -24,6 +24,6 @@ class ResultAlertPresenter: ResultAlertPresenterProtocol {
             buttonAction()
         }
         alert.addAction(action)
-        viewController.present(alert, animated: true)
+        viewController?.present(alert, animated: true)
     }
 }

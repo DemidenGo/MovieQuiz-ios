@@ -14,6 +14,8 @@
 		92220C2028B3F27D00838553 /* QuestionFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92220C1F28B3F27D00838553 /* QuestionFactoryProtocol.swift */; };
 		923EABDA28B4C56A00EE74C1 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923EABD928B4C56A00EE74C1 /* QuestionFactoryDelegate.swift */; };
 		926D255128BA3F6400E14D6A /* StatisticServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D255028BA3F6400E14D6A /* StatisticServiceProtocol.swift */; };
+		9283A18228C1EF0400FDF631 /* ErrorAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283A18128C1EF0400FDF631 /* ErrorAlertPresenter.swift */; };
+		9283A18428C1EF4800FDF631 /* ErrorAlertPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283A18328C1EF4800FDF631 /* ErrorAlertPresenterProtocol.swift */; };
 		929E17132893FF3E0092A285 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 929E17112893FF3E0092A285 /* YS Display-Bold.ttf */; };
 		929E17142893FF3E0092A285 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 929E17122893FF3E0092A285 /* YS Display-Medium.ttf */; };
 		92A6811428BE37F300707D70 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A6811328BE37F300707D70 /* NetworkClient.swift */; };
@@ -42,6 +44,8 @@
 		92220C1F28B3F27D00838553 /* QuestionFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryProtocol.swift; sourceTree = "<group>"; };
 		923EABD928B4C56A00EE74C1 /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 		926D255028BA3F6400E14D6A /* StatisticServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceProtocol.swift; sourceTree = "<group>"; };
+		9283A18128C1EF0400FDF631 /* ErrorAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlertPresenter.swift; sourceTree = "<group>"; };
+		9283A18328C1EF4800FDF631 /* ErrorAlertPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlertPresenterProtocol.swift; sourceTree = "<group>"; };
 		929E17112893FF3E0092A285 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		929E17122893FF3E0092A285 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		92A6811328BE37F300707D70 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
@@ -115,6 +119,8 @@
 				923EABD928B4C56A00EE74C1 /* QuestionFactoryDelegate.swift */,
 				92D3EC4F28B4D8030092414F /* ResultAlertPresenter.swift */,
 				92D3EC5128B4E7110092414F /* ResultAlertPresenterProtocol.swift */,
+				9283A18128C1EF0400FDF631 /* ErrorAlertPresenter.swift */,
+				9283A18328C1EF4800FDF631 /* ErrorAlertPresenterProtocol.swift */,
 				92AF795828B650A900B8687B /* StatisticService.swift */,
 				926D255028BA3F6400E14D6A /* StatisticServiceProtocol.swift */,
 				92A6811328BE37F300707D70 /* NetworkClient.swift */,
@@ -282,9 +288,11 @@
 				92220C1A28B3C5DD00838553 /* QuizStepViewModel.swift in Sources */,
 				92AF795928B650A900B8687B /* StatisticService.swift in Sources */,
 				92220C1E28B3C60300838553 /* QuizQuestion.swift in Sources */,
+				9283A18428C1EF4800FDF631 /* ErrorAlertPresenterProtocol.swift in Sources */,
 				92220C1828B3C03600838553 /* QuestionFactory.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
+				9283A18228C1EF0400FDF631 /* ErrorAlertPresenter.swift in Sources */,
 				92220C1C28B3C5F200838553 /* QuizResultsViewModel.swift in Sources */,
 				92D3EC5028B4D8030092414F /* ResultAlertPresenter.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
