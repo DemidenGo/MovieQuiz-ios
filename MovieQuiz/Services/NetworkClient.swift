@@ -8,7 +8,15 @@
 
 import UIKit
 
-struct NetworkClient {
+// MARK: - NetworkRouterProtocol
+
+protocol NetworkRouterProtocol {
+    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)
+}
+
+// MARK: - NetworkClient
+
+struct NetworkClient: NetworkRouterProtocol {
 
     private enum NetworkError: Error {
         case codeError
