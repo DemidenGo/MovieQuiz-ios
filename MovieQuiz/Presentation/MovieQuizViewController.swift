@@ -85,7 +85,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func setupDelegates() {
-        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
+        // Используем mock-данные для тестирования
+        questionFactory = MockQuestionFactory(delegate: self)
+        //questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         resultAlertPresenter = ResultAlertPresenter(viewController: self)
         errorAlertPresenter = ErrorAlertPresenter(viewController: self)
     }

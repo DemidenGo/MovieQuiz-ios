@@ -7,10 +7,9 @@
 
 import UIKit
 
-class QuestionFactory: QuestionFactoryProtocol {
+// MARK: - QuestionFactory
 
-    // Mock-данные для следующего спринта
-    //private var questions: [QuizQuestion] = QuizQuestion.makeMockModel()
+class QuestionFactory: QuestionFactoryProtocol {
 
     private weak var delegate: QuestionFactoryDelegate?
     private let moviesLoader: MoviesLoadable
@@ -46,7 +45,6 @@ class QuestionFactory: QuestionFactoryProtocol {
                     }
                 }
             }
-
             let randomRating = Int.random(in: 1...9)
             let text = "Рейтинг этого фильма больше, чем \(randomRating)?"
             let rating = Float(movie.rating) ?? 0
@@ -60,10 +58,6 @@ class QuestionFactory: QuestionFactoryProtocol {
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
         }
-// Работа с mock-данными для следующего спринта
-//        let index = (0..<questions.count).randomElement() ?? 0
-//        let question = questions[safe: index]
-//        delegate.didReceiveNextQuestion(question: question)
     }
 
     func loadData() {
@@ -89,5 +83,28 @@ class QuestionFactory: QuestionFactoryProtocol {
                 }
             }
         }
+    }
+}
+
+// MARK: - MockQuestionFactory
+
+// Mock-данные для тестирования
+class MockQuestionFactory: QuestionFactoryProtocol {
+
+    private var questions: [QuizQuestion] = QuizQuestion.makeMockModel()
+    private weak var delegate: QuestionFactoryDelegate?
+
+    init(delegate: QuestionFactoryDelegate) {
+        self.delegate = delegate
+    }
+
+    func requestNextQuestion() {
+        let index = (0..<questions.count).randomElement() ?? 0
+        let question = questions[safe: index]
+        delegate?.didReceiveNextQuestion(question: question)
+    }
+
+    func loadData() {
+        delegate?.didLoadDataFromServer()
     }
 }

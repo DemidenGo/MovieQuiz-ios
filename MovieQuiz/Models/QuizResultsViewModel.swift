@@ -20,8 +20,8 @@ struct QuizResultsViewModel {
                           _ totalAccuracy: Double) -> QuizResultsViewModel {
 
         if result == questionsAmount {
-            return QuizResultsViewModel(title: "Вы супер киноман!",
-                                         text: "Все ответы верные! Такому знактоку надо работать в киноиндустрии. Сколько фильмов вы можете посмотреть в день?\nКоличество сыгранных квизов: \(quizCounter)",
+            return QuizResultsViewModel(title: "Этот раунд окончен!",
+                                         text: "Вы супер киноман!\nВсе ответы верные! Такому знактоку надо работать в киноиндустрии. Сколько фильмов вы можете посмотреть в день?\nКоличество сыгранных квизов: \(quizCounter)",
                                          buttonText: "Сыграть ещё раз")
         } else {
             return QuizResultsViewModel(title: "Этот раунд окончен!",
