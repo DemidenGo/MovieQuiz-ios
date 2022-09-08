@@ -7,8 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var statisticService: StatisticServiceProtocol = StatisticServiceImplementation()
     private var currentQuestion: QuizQuestion?
-    private let questionsAmount = 10
-    private var currentQuestionIndex = 0
+    private let presenter = MovieQuizPresenter()
     private var rightAnswerCounter = 0
     private var bestQuizResult: GameRecord { statisticService.bestGame }
 
@@ -37,7 +36,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
         currentQuestion = question
-        let quizStep = convert(model: question)
+        let quizStep = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.activityIndicator.isHidden = true
             self?.show(quiz: quizStep)
@@ -120,7 +119,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func show(quiz step: QuizStepViewModel) {
         // здесь мы заполняем нашу картинку, текст и счётчик данными
-        counterLabel.text = "\(step.questionNumber)/\(questionsAmount)"
+        counterLabel.text = "\(step.questionNumber)/\(presenter.questionsAmount)"
         imageView.image = step.image
         imageView.layer.borderWidth = 0
         textLabel.text = step.question
@@ -130,18 +129,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func show(quiz result: QuizResultsViewModel) {
         // показываем алерт с результатами пройденного квиза, готовим следующий раунд квиза
         resultAlertPresenter?.show(quiz: result) { [weak self] in
-            self?.currentQuestionIndex = 0
+            self?.presenter.resetQuestionIndex()
             self?.rightAnswerCounter = 0
             self?.questionFactory?.requestNextQuestion()
         }
-    }
-
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        // конвертируем модель вопроса во вью модель для состояния "Вопрос задан"
-        let image = UIImage(data: model.image)
-        let question = model.text
-        let questionNumber = String(currentQuestionIndex + 1)
-        return QuizStepViewModel(image: image, question: question, questionNumber: questionNumber)
     }
 
     private func showAnswerResult(isCorrect: Bool) {
@@ -151,18 +142,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func showNextQuestionOrResult() {
-        if currentQuestionIndex == questionsAmount - 1 {
+        if presenter.isLastQuestion() {
             // вычисляем и показываем результат квиза
             calculateQuizResult()
             let quizResultsModel = QuizResultsViewModel.makeModel(for: rightAnswerCounter,
-                                                                  questionsAmount,
+                                                                  presenter.questionsAmount,
                                                                   statisticService.gamesCount,
                                                                   bestQuizResult,
                                                                   statisticService.totalAccuracy)
             show(quiz: quizResultsModel)
         } else {
             // показываем следующий вопрос
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
     }
@@ -170,9 +161,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func calculateQuizResult() {
         statisticService.gamesCount += 1
         if bestQuizResult.isWorseThan(currentQuizScore: rightAnswerCounter) {
-            statisticService.store(correct: rightAnswerCounter, total: questionsAmount)
+            statisticService.store(correct: rightAnswerCounter, total: presenter.questionsAmount)
         }
-        let currentAccuracy = round(Double(rightAnswerCounter) / Double(questionsAmount) * 100)
+        let currentAccuracy = round(Double(rightAnswerCounter) / Double(presenter.questionsAmount) * 100)
         let gamesCount = Double(statisticService.gamesCount)
         let previousGamesCount = Double(statisticService.gamesCount - 1)
         let totalAccuracy = (statisticService.totalAccuracy * (previousGamesCount) + currentAccuracy) / gamesCount
