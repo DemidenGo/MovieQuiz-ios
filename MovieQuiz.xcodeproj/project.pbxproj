@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92110C2B28C9DBF500F1C9BE /* StatisticServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92110C2A28C9DBF500F1C9BE /* StatisticServiceTests.swift */; };
 		92220C1828B3C03600838553 /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92220C1728B3C03600838553 /* QuestionFactory.swift */; };
 		92220C1A28B3C5DD00838553 /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92220C1928B3C5DD00838553 /* QuizStepViewModel.swift */; };
 		92220C1C28B3C5F200838553 /* QuizResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92220C1B28B3C5F200838553 /* QuizResultsViewModel.swift */; };
@@ -58,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		92110C2A28C9DBF500F1C9BE /* StatisticServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceTests.swift; sourceTree = "<group>"; };
 		92220C1728B3C03600838553 /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		92220C1928B3C5DD00838553 /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStepViewModel.swift; sourceTree = "<group>"; };
 		92220C1B28B3C5F200838553 /* QuizResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsViewModel.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				9277987228C5EA5A00E305C2 /* ArrayTests.swift */,
 				9277987A28C6167E00E305C2 /* DateTests.swift */,
 				9277987428C5F12B00E305C2 /* MoviesLoaderTests.swift */,
+				92110C2A28C9DBF500F1C9BE /* StatisticServiceTests.swift */,
 			);
 			path = MovieQuizTests;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 			files = (
 				9277987328C5EA5A00E305C2 /* ArrayTests.swift in Sources */,
 				9277987B28C6167E00E305C2 /* DateTests.swift in Sources */,
+				92110C2B28C9DBF500F1C9BE /* StatisticServiceTests.swift in Sources */,
 				9277987528C5F12B00E305C2 /* MoviesLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
