@@ -16,17 +16,25 @@ final class MovieQuizPresenter {
     private var statisticService: StatisticServiceProtocol!
     private var bestQuizResult: GameRecord { statisticService.bestGame }
     private var questionFactory: QuestionFactoryProtocol?
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
 
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         statisticService = StatisticServiceImplementation()
-        //questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
-        questionFactory = MockQuestionFactory(delegate: self) // Mock-данные для тестирования
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
+        //questionFactory = MockQuestionFactory(delegate: self) // Mock-данные для тестирования UI
         questionFactory?.loadData()
     }
 
     // MARK: - Internal functions
+
+    // Конвертируем модель вопроса во вью модель для состояния "Вопрос задан"
+    func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let image = UIImage(data: model.image)
+        let question = model.text
+        let questionNumber = String(currentQuestionIndex + 1)
+        return QuizStepViewModel(image: image, question: question, questionNumber: questionNumber)
+    }
 
     // Проверяем правильность ответа
     func check(userAnswer: Bool) {
@@ -53,14 +61,6 @@ final class MovieQuizPresenter {
     }
 
     // MARK: - Private functions
-
-    // Конвертируем модель вопроса во вью модель для состояния "Вопрос задан"
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let image = UIImage(data: model.image)
-        let question = model.text
-        let questionNumber = String(currentQuestionIndex + 1)
-        return QuizStepViewModel(image: image, question: question, questionNumber: questionNumber)
-    }
 
     // Проверка окончания игры
     private func showNextQuestionOrResult() {

@@ -11,7 +11,7 @@ import XCTest
 
 // MARK: - MoviesLoaderTests
 
-class MoviesLoaderTests: XCTestCase {
+final class MoviesLoaderTests: XCTestCase {
 
     // Тест для проверки успешной загрузки
     func testSuccessLoading() throws {

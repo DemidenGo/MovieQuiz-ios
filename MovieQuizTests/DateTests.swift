@@ -9,7 +9,7 @@
 import XCTest
 @testable import MovieQuiz
 
-class DateTests: XCTestCase {
+final class DateTests: XCTestCase {
 
     func testGetRightDateFormat() throws {
         // Given

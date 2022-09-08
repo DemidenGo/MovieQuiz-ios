@@ -5,10 +5,11 @@
 //  Created by Юрий Демиденко on 06.09.2022.
 //
 // Тестируем UI приложения
+// Для корректного теста необходимо подключить к проекту mock-данные в инициализаторе MovieQuizPresenter
 
 import XCTest
 
-class MovieQuizUITests: XCTestCase {
+final class MovieQuizUITests: XCTestCase {
 
     var app: XCUIApplication!
 

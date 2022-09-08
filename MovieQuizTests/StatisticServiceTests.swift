@@ -11,7 +11,7 @@ import XCTest
 
 // MARK: - StatisticServiceTests
 
-class StatisticServiceTests: XCTestCase {
+final class StatisticServiceTests: XCTestCase {
 
     func testStatisticStorage() throws {
         // Given
