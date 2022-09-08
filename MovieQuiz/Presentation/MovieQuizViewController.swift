@@ -6,9 +6,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var errorAlertPresenter: ErrorAlertPresenterProtocol?
     private var questionFactory: QuestionFactoryProtocol?
     private var statisticService: StatisticServiceProtocol = StatisticServiceImplementation()
+
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private var currentQuestion: QuizQuestion?
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
     private let presenter = MovieQuizPresenter()
-    private var rightAnswerCounter = 0
     private var bestQuizResult: GameRecord { statisticService.bestGame }
 
     @IBOutlet private weak var counterLabel: UILabel!
@@ -65,15 +70,41 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Actions
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        check(userAnswer: true)
+        presenter.currentQuestion = currentQuestion
+        presenter.check(userAnswer: true)
         disableUserInteractionForButtons()
         showNextQuestionOrResultWithDelay(seconds: 1)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        check(userAnswer: false)
+        presenter.currentQuestion = currentQuestion
+        presenter.check(userAnswer: false)
         disableUserInteractionForButtons()
         showNextQuestionOrResultWithDelay(seconds: 1)
+    }
+
+    // MARK: - Internal functions
+
+    func disableUserInteractionForButtons() {
+        yesButton.isUserInteractionEnabled = false
+        noButton.isUserInteractionEnabled = false
+    }
+
+    func enableUserInteractionForButtons() {
+        yesButton.isUserInteractionEnabled = true
+        noButton.isUserInteractionEnabled = true
+    }
+
+    func showNextQuestionOrResultWithDelay(seconds: Double) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            self.showNextQuestionOrResult()
+        }
+    }
+
+    func showAnswerResult(isCorrect: Bool) {
+        // индикация правильности ответа
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
 
     // MARK: - Private functions
@@ -84,38 +115,23 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func setupDelegates() {
-        // Используем mock-данные для тестирования
+        // Mock-данные для тестирования
         questionFactory = MockQuestionFactory(delegate: self)
         //questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         resultAlertPresenter = ResultAlertPresenter(viewController: self)
         errorAlertPresenter = ErrorAlertPresenter(viewController: self)
+        presenter.viewController = self
     }
 
-    private func check(userAnswer: Bool) {
-        guard let currentQuestion = currentQuestion else { return }
-        if userAnswer == currentQuestion.correctAnswer {
-            showAnswerResult(isCorrect: true)
-            rightAnswerCounter += 1
-        } else {
-            showAnswerResult(isCorrect: false)
-        }
-    }
-
-    private func disableUserInteractionForButtons() {
-        yesButton.isUserInteractionEnabled = false
-        noButton.isUserInteractionEnabled = false
-    }
-
-    private func enableUserInteractionForButtons() {
-        yesButton.isUserInteractionEnabled = true
-        noButton.isUserInteractionEnabled = true
-    }
-
-    private func showNextQuestionOrResultWithDelay(seconds: Double) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            self.showNextQuestionOrResult()
-        }
-    }
+//    private func check(userAnswer: Bool) {
+//        guard let currentQuestion = currentQuestion else { return }
+//        if userAnswer == currentQuestion.correctAnswer {
+//            showAnswerResult(isCorrect: true)
+//            presenter.rightAnswer()
+//        } else {
+//            showAnswerResult(isCorrect: false)
+//        }
+//    }
 
     private func show(quiz step: QuizStepViewModel) {
         // здесь мы заполняем нашу картинку, текст и счётчик данными
@@ -130,22 +146,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         // показываем алерт с результатами пройденного квиза, готовим следующий раунд квиза
         resultAlertPresenter?.show(quiz: result) { [weak self] in
             self?.presenter.resetQuestionIndex()
-            self?.rightAnswerCounter = 0
+            self?.presenter.resetRightAnswerCounnter()
             self?.questionFactory?.requestNextQuestion()
         }
-    }
-
-    private func showAnswerResult(isCorrect: Bool) {
-        // индикация правильности ответа
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
 
     private func showNextQuestionOrResult() {
         if presenter.isLastQuestion() {
             // вычисляем и показываем результат квиза
             calculateQuizResult()
-            let quizResultsModel = QuizResultsViewModel.makeModel(for: rightAnswerCounter,
+            let quizResultsModel = QuizResultsViewModel.makeModel(for: presenter.getRightAnswers(),
                                                                   presenter.questionsAmount,
                                                                   statisticService.gamesCount,
                                                                   bestQuizResult,
@@ -160,10 +170,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func calculateQuizResult() {
         statisticService.gamesCount += 1
-        if bestQuizResult.isWorseThan(currentQuizScore: rightAnswerCounter) {
-            statisticService.store(correct: rightAnswerCounter, total: presenter.questionsAmount)
+        if bestQuizResult.isWorseThan(currentQuizScore: presenter.getRightAnswers()) {
+            statisticService.store(correct: presenter.getRightAnswers(), total: presenter.questionsAmount)
         }
-        let currentAccuracy = round(Double(rightAnswerCounter) / Double(presenter.questionsAmount) * 100)
+        let currentAccuracy = round(Double(presenter.getRightAnswers()) / Double(presenter.questionsAmount) * 100)
         let gamesCount = Double(statisticService.gamesCount)
         let previousGamesCount = Double(statisticService.gamesCount - 1)
         let totalAccuracy = (statisticService.totalAccuracy * (previousGamesCount) + currentAccuracy) / gamesCount
