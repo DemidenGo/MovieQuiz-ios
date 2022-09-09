@@ -9,9 +9,6 @@
 import UIKit
 
 protocol MovieQuizViewControllerProtocol: AnyObject {
-
-    var errorAlertPresenter: ErrorAlertPresenterProtocol? { get set }
-
     func disableUserInteractionForButtons()
     func enableUserInteractionForButtons()
     func showLoadingIndicator()
@@ -19,4 +16,5 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
     func showAnswerResult(isCorrect: Bool)
     func show(quiz step: QuizStepViewModel)
     func show(quiz result: QuizResultsViewModel)
+    func showNetworkError(message: String, buttonAction: @escaping () -> Void)
 }

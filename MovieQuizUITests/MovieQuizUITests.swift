@@ -5,7 +5,8 @@
 //  Created by Юрий Демиденко on 06.09.2022.
 //
 // Тестируем UI приложения
-// Для корректного теста необходимо подключить к проекту mock-данные в инициализаторе MovieQuizPresenter
+// Для корректного теста необходимо подключить к проекту mock-данные в MovieQuizViewController:
+// presenter.questionFactory = MockQuestionFactory(delegate: presenter)
 
 import XCTest
 
@@ -48,26 +49,10 @@ final class MovieQuizUITests: XCTestCase {
 
     // Тест появления алерта при окончании раунда
     func testResultAlertDidAppear() throws {
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
+        for _ in 1...10 {
+            app.buttons["Yes"].tap()
+            sleep(1)
+        }
         let alert = app.alerts.firstMatch
         XCTAssertTrue(alert.exists)
         XCTAssertEqual(alert.label, "Этот раунд окончен!")
@@ -76,26 +61,10 @@ final class MovieQuizUITests: XCTestCase {
 
     // Тест скрытия алерта после нажатия на кнопку на нём
     func testResultAlertDidDisappear() throws {
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
-        app.buttons["Yes"].tap()
-        sleep(1)
+        for _ in 1...10 {
+            app.buttons["Yes"].tap()
+            sleep(1)
+        }
         let alert = app.alerts.firstMatch
         alert.buttons.firstMatch.tap()
         XCTAssertFalse(alert.exists)

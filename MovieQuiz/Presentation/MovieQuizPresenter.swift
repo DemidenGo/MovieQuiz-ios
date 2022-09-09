@@ -10,20 +10,18 @@ import UIKit
 final class MovieQuizPresenter {
 
     let questionsAmount = 10
+    var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var rightAnswerCounter = 0
     private var currentQuestionIndex = 0
-    private var statisticService: StatisticServiceProtocol!
+    private var statisticService: StatisticServiceProtocol
     private var bestQuizResult: GameRecord { statisticService.bestGame }
-    private var questionFactory: QuestionFactoryProtocol?
     private weak var viewController: MovieQuizViewControllerProtocol?
 
-    init(viewController: MovieQuizViewControllerProtocol) {
+    init(viewController: MovieQuizViewControllerProtocol,
+         statisticService: StatisticServiceProtocol = StatisticServiceImplementation()) {
         self.viewController = viewController
-        statisticService = StatisticServiceImplementation()
-        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
-        //questionFactory = MockQuestionFactory(delegate: self) // Mock-данные для тестирования UI
-        questionFactory?.loadData()
+        self.statisticService = statisticService
     }
 
     // MARK: - Internal functions
@@ -133,7 +131,7 @@ extension MovieQuizPresenter: QuestionFactoryDelegate {
     // Пришла ошибка от сервера
     func didFailToLoadData(with error: String, buttonAction: @escaping () -> Void) {
         viewController?.hideLoadingIndicator()
-        viewController?.errorAlertPresenter?.showNetworkError(message: error) {
+        viewController?.showNetworkError(message: error) {
             buttonAction()
         }
     }

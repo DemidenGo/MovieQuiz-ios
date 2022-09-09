@@ -2,7 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
 
-    var errorAlertPresenter: ErrorAlertPresenterProtocol?
+    private var errorAlertPresenter: ErrorAlertPresenterProtocol?
     private var resultAlertPresenter: ResultAlertPresenterProtocol?
     private var presenter: MovieQuizPresenter!
 
@@ -22,6 +22,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         setupImageView()
         showLoadingIndicator()
         setupDelegates()
+        setupQuestionFactory()
     }
 
     // MARK: - Actions
@@ -81,6 +82,10 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         }
     }
 
+    func showNetworkError(message: String, buttonAction: @escaping () -> Void) {
+        errorAlertPresenter?.showNetworkError(message: message, buttonAction: buttonAction)
+    }
+
     // MARK: - Private functions
 
     private func setupImageView() {
@@ -92,5 +97,10 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         presenter = MovieQuizPresenter(viewController: self)
         resultAlertPresenter = ResultAlertPresenter(viewController: self)
         errorAlertPresenter = ErrorAlertPresenter(viewController: self)
+    }
+
+    private func setupQuestionFactory() {
+        presenter.questionFactory = QuestionFactory(delegate: presenter)
+        presenter.questionFactory?.loadData()
     }
 }

@@ -15,7 +15,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoadable
     private var movies: [MostPopularMovie] = []
 
-    init(delegate: QuestionFactoryDelegate, moviesLoader: MoviesLoadable) {
+    init(delegate: QuestionFactoryDelegate, moviesLoader: MoviesLoadable = MoviesLoader()) {
         self.delegate = delegate
         self.moviesLoader = moviesLoader
     }

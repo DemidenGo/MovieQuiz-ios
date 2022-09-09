@@ -28,9 +28,6 @@ final class MovieQuizPresenterTests: XCTestCase {
 }
 
 final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
-
-    var errorAlertPresenter: ErrorAlertPresenterProtocol?
-
     func disableUserInteractionForButtons() { }
     func enableUserInteractionForButtons() { }
     func showLoadingIndicator() { }
@@ -38,4 +35,5 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
     func showAnswerResult(isCorrect: Bool) { }
     func show(quiz step: QuizStepViewModel) { }
     func show(quiz result: QuizResultsViewModel) { }
+    func showNetworkError(message: String, buttonAction: @escaping () -> Void) { }
 }
