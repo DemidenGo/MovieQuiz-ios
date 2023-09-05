@@ -1,8 +1,11 @@
 ## MovieQuiz
 
-MovieQuiz - это приложение с квизами о фильмах из топ-250 рейтинга IMDb
+MovieQuiz - одностраничное приложение с квизами о фильмах из топ-250 рейтинга IMDb. Информация о фильмах запрашивается через [API IMDb](https://imdb-api.com/api#Top250Movies-header). При работе над приложением изучались архитектурные паттерны MVC и MVP, вёрстка с помощью Storyboard, работа с сетью.  
+**Технологии:** MVP, UIKit, Storyboard, DispatchQueue, UserDefaults, URLSession, JSONDecoder, Decodable, API IMDb, XCTest, unit tests, UI tests.
 
 ![AppScreenshot1](AppScreenshots/1.png) ![AppScreenshot2](AppScreenshots/2.png) ![AppScreenshot3](AppScreenshots/3.png) ![AppScreenshot4](AppScreenshots/4.png)
+
+**ВНИМАНИЕ** ‼️ К сожалению, сервис imdb.com с июля 2023 года убрал возможность бесплатного тестового доступа к своему API. Теперь доступ к API IMDb только по платной подписке. По этой причине функциональность приложения ограничена. Для восстановления функциональности необходимо использовать актуальный API Key. Ключ задаётся по адресу /MovieQuiz/Resources/Constants.swift (константа apiKey).
 
 ## Ссылки
 
