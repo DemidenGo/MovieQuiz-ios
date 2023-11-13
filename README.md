@@ -1,6 +1,6 @@
 ## MovieQuiz
 
-MovieQuiz - одностраничное приложение с квизами о фильмах из топ-250 рейтинга IMDb. Информация о фильмах запрашивается через [API IMDb](https://imdb-api.com/api#Top250Movies-header). При работе над приложением изучались архитектурные паттерны MVC и MVP, вёрстка с помощью Storyboard, работа с сетью.  
+MovieQuiz - одностраничное приложение с квизами о фильмах из топ-250 рейтинга IMDb. Информация о фильмах запрашивается через [API IMDb](https://imdb-api.com/api#Top250Movies-header). Пользователь приложения последовательно отвечает на вопросы о рейтинге фильмов. По итогам каждого раунда игры показывается статистика с количеством правильных ответов и лучших результатах пользователя. Цель игры - правильно ответить на все 10 вопросов раунда.   
 **Технологии:** MVP, UIKit, Storyboard, DispatchQueue, UserDefaults, URLSession, JSONDecoder, Decodable, API IMDb, XCTest, unit tests, UI tests.
 
 ![AppScreenshot1](AppScreenshots/1.png) ![AppScreenshot2](AppScreenshots/2.png) ![AppScreenshot3](AppScreenshots/3.png) ![AppScreenshot4](AppScreenshots/4.png)
@@ -12,10 +12,6 @@ MovieQuiz - одностраничное приложение с квизами 
 [Макет Figma](https://www.figma.com/file/l0IMG3Eys35fUrbvArtwsR/YP-Quiz?node-id=34%3A243)
 
 [API IMDb](https://imdb-api.com/api#Top250Movies-header)
-
-## Описание приложения
-
-- Одностраничное приложение с квизами о фильмах из топ-250 рейтинга IMDb. Пользователь приложения последовательно отвечает на вопросы о рейтинге фильма. По итогам каждого раунда игры показывается статистика о количестве правильных ответов и лучших результатах пользователя. Цель игры - правильно ответить на все 10 вопросов раунда.
 
 ## Функциональные требования
 
